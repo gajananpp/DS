@@ -3,20 +3,10 @@
  */
 import passport from 'passport';
 import unsupportedMessage from '../db/unsupportedMessage';
-import { controllers, passport as passportConfig } from '../db';
-
-const usersController = controllers && controllers.users;
-const topicsController = controllers && controllers.topics;
+import { passport as passportConfig } from '../db';
 
 export default (app) => {
   // user routes
-  if (usersController) {
-    app.post('/login', usersController.login);
-    app.post('/signup', usersController.signUp);
-    app.post('/logout', usersController.logout);
-  } else {
-    console.warn(unsupportedMessage('users routes'));
-  }
 
   if (passportConfig && passportConfig.google) {
     // google auth
@@ -37,19 +27,30 @@ export default (app) => {
     // Otherwise, the authentication has failed.
     app.get('/auth/google/callback',
       passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/login'
+        successRedirect: '/user',
+        failureRedirect: '/'
       })
     );
+
+
+    app.get('/user/userInfo', checkAuthentication, (req, res) => {
+      res.json(req.user);
+    });
+
+    app.get('/logout', (req, res) => {
+      req.session.destroy();
+      req.logout();
+      res.redirect("/");
+    });
+
+    function checkAuthentication(req, res, next) {
+      if (req.isAuthenticated()) {
+        next();
+      } else {
+        res.json({error: 'Not Logged In'});
+      }
+    }
+
   }
 
-  // topic routes
-  if (topicsController) {
-    app.get('/topic', topicsController.all);
-    app.post('/topic/:id', topicsController.add);
-    app.put('/topic/:id', topicsController.update);
-    app.delete('/topic/:id', topicsController.remove);
-  } else {
-    console.warn(unsupportedMessage('topics routes'));
-  }
 };

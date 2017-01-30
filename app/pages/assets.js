@@ -15,7 +15,7 @@ const metaAssets = () => {
     { name: 'description', content: 'Your One-Stop solution for a full-stack universal Redux App' },
     // Setting IE=edge tells Internet Explorer to use the latest engine to
     //  render the page and execute Javascript
-    { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+    // { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
     // Using the viewport tag allows you to control the width and scaling of
     // the browser's viewport:
     // - include width=device-width to match the screen's width in
@@ -25,16 +25,16 @@ const metaAssets = () => {
     // - ensure your page is accessible by not disabling user scaling.
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     // Disable tap highlight on IE
-    { name: 'msapplication-tap-highlight', content: 'no' },
+    // { name: 'msapplication-tap-highlight', content: 'no' },
     // Add to homescreen for Chrome on Android
-    { name: 'mobile-web-app-capable', content: 'yes' },
+    // { name: 'mobile-web-app-capable', content: 'yes' },
     // Add to homescreen for Safari on IOS
-    { name: 'apple-mobile-web-app-capable', content: 'yes' },
-    { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
-    { name: 'apple-mobile-web-app-title', content: 'reactGo' },
+    // { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    // { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+    // { name: 'apple-mobile-web-app-title', content: 'reactGo' },
     // Tile icon for Win8 (144x144 + tile color)
-    { name: 'msapplication-TileImage', content: msFavicon },
-    { name: 'msapplication-TileColor', content: '#3372DF' }
+    // { name: 'msapplication-TileImage', content: msFavicon },
+    // { name: 'msapplication-TileColor', content: '#3372DF' }
   ];
 };
 
@@ -42,11 +42,13 @@ const linkAssets = () => {
   const links = [
     // Add to homescreen for Chrome on Android
     { rel: 'icon', href: favicon },
+    { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
     { rel: 'icon', sizes: '192x192', href: chromeFavicon },
     // Add to homescreen for Safari on IOS
-    { rel: 'apple-touch-icon', sizes: '152x152', href: appleFavicon },
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto+Condensed', type: 'text/css' },
-    { rel: 'stylesheet', href: '/assets/styles/main.css' }
+    // { rel: 'apple-touch-icon', sizes: '152x152', href: appleFavicon },
+    // { rel: 'stylesheet', href: 'htt  ps://fonts.googleapis.com/css?family=Roboto+Condensed', type: 'text/css' },
+    // { rel: 'stylesheet', href: '/assets/styles/index.css' }
+    // { rel: 'stylesheet', href: '/assets/styles/main.css' }
     // SEO: If your mobile URL is different from the desktop URL,
     // add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones
     // { 'rel': 'canonical', 'href': 'http://www.example.com/' }
@@ -54,6 +56,23 @@ const linkAssets = () => {
   return isProduction ? links : links.filter(l => l.rel !== 'stylesheet');
 };
 
-export const title = 'reactGo - just ship it';
+// add style in <style> here
+const styleAssets = () => {
+    return [
+        { type: "text/css", cssText: 
+        `` 
+        }
+    ];
+};
+
+const noscriptAssets = () => {
+    return [
+        // {innerHTML: `<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />`}
+    ];
+};
+
+export const title = 'Digital Signage';
 export const meta = metaAssets();
 export const link = linkAssets();
+export const style = styleAssets();
+export const noscript = noscriptAssets();

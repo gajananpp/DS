@@ -2,40 +2,40 @@ import User from '../models/user';
 
 /* eslint-disable no-param-reassign */
 export default (req, accessToken, refreshToken, profile, done) => {
-  if (req.user) {
-    return User.findOne({ google: profile.id }, (findOneErr, existingUser) => {
-      if (existingUser) {
-        return done(null, false, { message: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+  User.findOne({"profileId": profile.id}, (err, user) => {
+    if (err)
+      return done(err);
+    if (user) {
+      // let imageUrl = "";
+      // if (profile.photos && profile.photos.length) {
+      //  imageUrl = profile.photos[0].value;
+      // }
+       User.findOneAndUpdate({"profileId": profile.id}, {
+         "token": accessToken,
+         "displayName": profile.displayName,
+         "email": profile.emails[0].value,
+         "picture": profile.photos ? profile.photos[0].value : ""
+       }, {"upsert": false}, (err, user) => {
+         if (err) {
+           return done(err);
+         } else {
+           return done(null, user);
+         }
+       }); 
+    } else {
+       let newUser = new User();
+       newUser.profileId = profile.id;
+       newUser.token = accessToken;
+       newUser.displayName = profile.displayName;
+       newUser.email = profile.emails[0].value;
+       newUser.picture = profile.photos ? profile.photos[0].value : "";
+       newUser.createdAt = Date();
+       newUser.save((err) => {
+         if (err)
+           throw err;
+          return done(null, newUser);
+       });
       }
-      return User.findById(req.user.id, (findByIdErr, user) => {
-        user.google = profile.id;
-        user.tokens.push({ kind: 'google', accessToken });
-        user.profile.name = user.profile.name || profile.displayName;
-        user.profile.gender = user.profile.gender || profile._json.gender;
-        user.profile.picture = user.profile.picture || profile._json.picture;
-        user.save((err) => {
-          done(err, user, { message: 'Google account has been linked.' });
-        });
-      });
-    });
-  }
-  return User.findOne({ google: profile.id }, (findByGoogleIdErr, existingUser) => {
-    if (existingUser) return done(null, existingUser);
-    return User.findOne({ email: profile._json.emails[0].value }, (findByEmailErr, existingEmailUser) => {
-      if (existingEmailUser) {
-        return done(null, false, { message: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
-      }
-      const user = new User();
-      user.email = profile._json.emails[0].value;
-      user.google = profile.id;
-      user.tokens.push({ kind: 'google', accessToken });
-      user.profile.name = profile.displayName;
-      user.profile.gender = profile._json.gender;
-      user.profile.picture = profile._json.picture;
-      return user.save((err) => {
-        done(err, user);
-      });
-    });
-  });
+   });
 };
 /* eslint-enable no-param-reassign */

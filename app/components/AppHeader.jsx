@@ -48,7 +48,7 @@ const AppBarChildren = ({ authenticated, userInfo, self }) => (
 	<div id="profile-info-holder">
 		<FlatButton 
 			onClick = {() => self.setState({open: true})}
-			style = {{height: 62, paddingRight: 0}}
+			style = {{height: 65, paddingRight: 0}}
 			children = {
 				<div id="profile-info" style={styles.ProfileInfo}>
 					<Avatar 
@@ -127,7 +127,11 @@ class AppHeader extends React.Component {
           			onRequestClose={this.handleRequestClose}
         		>
           			<Menu>
-            			<MenuItem primaryText="Sign out" onClick={() => window.location.pathname = '\/logout'}/>
+            			<MenuItem 
+            				primaryText="Sign out" 
+            				onClick={() => window.location.pathname = '\/logout'}
+            				leftIcon={<FontIcon className="fa fa-sign-out" />}
+            			/>
           			</Menu>
         		</Popover>
 			</div>

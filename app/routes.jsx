@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import AppLayout from './components/AppLayout';
-import { HomePage, UserPage } from './pages';
+import { HomePage } from './pages';
+import { UserPageContainer } from './containers';
 import { getUserInfo } from './actions/users';
 
 /*
@@ -34,7 +35,7 @@ export default (store) => {
   return (
     <Route path="/" component={AppLayout}>
       <IndexRoute component={HomePage} onEnter={redirectAuth} />
-      <Route path="user" component={UserPage} onEnter={requireAuth} />
+      <Route path="user" component={UserPageContainer} onEnter={requireAuth} />
     </Route>
   );
 };

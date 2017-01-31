@@ -17,7 +17,11 @@ const UserSchema = new mongoose.Schema({
   "displayName": String,
   "email": String,
   "picture": String,
-  "createdAt": String
+  "createdAt": Date,
+  "userData": {
+  	"presentations": [],
+  	"displays": []
+  }
 });
 
 

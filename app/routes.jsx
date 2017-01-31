@@ -4,6 +4,7 @@ import AppLayout from './components/AppLayout';
 import { HomePage } from './pages';
 import { UserPageContainer } from './containers';
 import { getUserInfo } from './actions/users';
+import { PresentationPageContainer } from './containers';
 
 /*
  * @param {Redux Store}
@@ -36,6 +37,7 @@ export default (store) => {
     <Route path="/" component={AppLayout}>
       <IndexRoute component={HomePage} onEnter={redirectAuth} />
       <Route path="user" component={UserPageContainer} onEnter={requireAuth} />
+      <Route path="/user/presentation" component={PresentationPageContainer} onEnter={requireAuth} />
     </Route>
   );
 };

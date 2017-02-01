@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import UserPage from '../pages/UserPage';
+import UserHomePage from '../pages/UserHomePage';
 
 const mapStateToProps = (state) => {
 	return {
@@ -8,6 +8,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const UserPageContainer = connect(mapStateToProps)(UserPage);
+const UserHomePageContainer = connect(mapStateToProps)(UserHomePage);
 
-export default UserPageContainer;
+export default UserHomePageContainer;

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import { getUserInfo } from './actions/users';
+
 import AppLayout from './components/AppLayout';
 import { HomePage } from './pages';
-import { UserPageContainer } from './containers';
-import { getUserInfo } from './actions/users';
+import { UserPage } from './pages';
+import { UserHomePageContainer } from './containers';
 import { PresentationPageContainer } from './containers';
 
 /*
@@ -36,8 +38,10 @@ export default (store) => {
   return (
     <Route path="/" component={AppLayout}>
       <IndexRoute component={HomePage} onEnter={redirectAuth} />
-      <Route path="user" component={UserPageContainer} onEnter={requireAuth} />
-      <Route path="/user/presentation" component={PresentationPageContainer} onEnter={requireAuth} />
+      <Route path="user" component={UserPage} onEnter={requireAuth}>
+        <IndexRoute component={UserHomePageContainer} />
+        <Route path="presentation" component={PresentationPageContainer} />
+      </Route>
     </Route>
   );
 };

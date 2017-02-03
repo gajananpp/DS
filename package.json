@@ -94,6 +94,7 @@
     "postcss-reporter": "^3.0.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
+    "react-grid-layout": "^0.13.9",
     "react-helmet": "^3.2.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",

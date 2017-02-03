@@ -16,7 +16,6 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => {
 <!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     ${headAssets.title.toString()}
     ${headAssets.meta.toString()}
     ${headAssets.link.toString()}

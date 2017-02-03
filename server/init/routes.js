@@ -47,7 +47,7 @@ export default (app) => {
       if (req.isAuthenticated()) {
         next();
       } else {
-        res.json({error: 'Not Logged In'});
+        res.redirect('/');
       }
     }
 

@@ -80,7 +80,7 @@ class UserHomePage extends React.Component {
 						<RaisedButton 
 							label="Add Presentation"
 							labelPosition="after"
-							href="/user/presentation"
+							href="/user/add-presentation"
 							style={styles.headlineButton}
 							icon={<FontIcon className="fa fa-plus" style={{fontSize: 15}} />}
 						/>

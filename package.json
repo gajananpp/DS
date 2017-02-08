@@ -16,7 +16,7 @@
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test npm test -- --watch --no-single-run"
   },
-  "author": "Choon Ken Ding",
+  "author": "Gajanan Patil",
   "license": "MIT",
   "devDependencies": {
     "enzyme": "^2.4.1",
@@ -93,8 +93,8 @@
     "postcss-loader": "^1.2.1",
     "postcss-reporter": "^3.0.0",
     "react": "^15.4.1",
+    "react-custom-scrollbars": "^4.0.1",
     "react-dom": "^15.4.1",
-    "react-grid-layout": "^0.13.9",
     "react-helmet": "^3.2.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",

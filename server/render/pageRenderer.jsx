@@ -25,6 +25,11 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => {
         margin: 0;
         padding: 0;
       }
+
+      html {
+        width: 100%;
+        height: 100%
+      }
     </style>
   </head>
   <body>

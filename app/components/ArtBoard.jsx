@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactGridLayout from 'react-grid-layout';
+
+import { Scrollbars } from 'react-custom-scrollbars';
 
 
 class ArtBoard extends React.Component {
@@ -10,13 +11,10 @@ class ArtBoard extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<ReactGridLayout layout={this.props.layout} cols={12} rowHeight={30} width={1800}>
-					{(this.props.layout).map((obj, index) => (
-						<div key={index} style={{border: '1px solid red', position: 'absolute !important', zIndex: `${index*100} !important`}}></div>
-					))}
-				</ReactGridLayout>
-			</div>		
+			<Scrollbars>
+				<div style={{width: this.props.width, height: this.props.height}}>
+				</div>
+			</Scrollbars>
 		);
 	}
 }

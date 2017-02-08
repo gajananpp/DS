@@ -8,6 +8,8 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
+import logoIcon from '../images/logo.png';
+
 
 const styles = {
 	AppBar: {
@@ -114,8 +116,8 @@ class AppHeader extends React.Component {
 		return (
 			<div>
 				<AppBar 
-					title={<span>Digital Signage</span>}
-					showMenuIconButton={false}
+					iconElementLeft={<img src={logoIcon} width={220}/>}
+					showMenuIconButton={true}
 					style={styles.AppBar}
 					children={<AppBarChildren authenticated={this.props.authenticated} userInfo={this.props.userInfo} self={this}/>}
 				/>

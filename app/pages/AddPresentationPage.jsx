@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -9,6 +9,8 @@ import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
+
+import { SketchPicker } from 'react-color';
 
 import ArtBoard from '../components/ArtBoard';
 
@@ -32,23 +34,37 @@ class AddPresentationPage extends React.Component {
 		super(props);
 		this.state = {
 			dialogOpen: true,
+
 			presentationName: '',
 			screenResolution: {
 				width: 1024,
 				height: 768,
 				currentIndex: 0
-			}
+			},
+			backgroundImgURL: '',
+			backgroundColor: {
+				r: '255',
+      			g: '255',
+      			b: '255',
+      			a: '100',
+			},
+
+			displayColorPicker: false,
+			widgetDialogOpen: false,
+
+			widgetsUsed: [{"name": "Image Widget", "element": <div style={{width: '100%', height: '100%'}}><img style={{width: '100%', height: '100%'}} src="http://www.w3schools.com/css/img_fjords.jpg" alt="image appears here"/></div>}],
 		};
 	}
 
 
 	handleClose = () => {
 		this.setState({
-			dialogOpen: false
+			dialogOpen: false,
+			widgetDialogOpen: false
 		});
 	}
 
-	handleInputName(event,text) {
+	handleInputName(event, text) {
 		this.setState({
 			presentationName: text
 		});
@@ -64,7 +80,53 @@ class AddPresentationPage extends React.Component {
 		});
 	}
 
+	handleColorPickerClick() {
+		this.setState({
+			displayColorPicker: !this.state.displayColorPicker,
+		});
+	}
+
+	handleColorPickerClose() {
+		this.setState({
+			displayColorPicker: false,
+		});
+	}
+
+	handleImgURLInput = (event, text) => {
+		this.setState({
+			backgroundImgURL: text,
+		});
+	}
+
+	handleColorChange = (color) => {
+		// console.log(color);
+		this.setState({
+			backgroundImgURL: '',
+			backgroundColor: color.rgb,
+		});
+	}
+
+	openDialogWidget() {
+		this.setState({
+			widgetDialogOpen: true
+		});
+	}
+
 	render() {
+
+		const popover = {
+      		position: 'absolute',
+      		zIndex: '2',
+    	};
+    	const cover = {
+      		position: 'fixed',
+      		top: '0px',
+      		right: '0px',
+      		bottom: '0px',
+      		left: '0px',
+    	};
+
+
 		return (
 			<div>
 				<div style={{display: 'flex', flexDirection: 'row', height: "85vh"}}>
@@ -75,13 +137,22 @@ class AddPresentationPage extends React.Component {
 							<span style={{lineHeight: 2.5}}>{this.state.presentationName}</span>
 						</div>
 						<List style={{padding: 0}}>
-							<ListItem primaryText="Add Widget" onClick={() => this.addPlaceholder()} leftIcon={<FontIcon className="fa fa-plus" />} />
+							<ListItem primaryText="Add Widget" onClick={() => this.openDialogWidget()} leftIcon={<FontIcon className="fa fa-plus" />} />
 						</List>
 					</div>
 					<div
 						style={{width: "80%", height: "84.5vh", border: '1px solid black', outline: '5px solid grey', overflow: 'auto'}}
+						 id="presentation-artboard"
 					>
-						<ArtBoard width={this.state.screenResolution.width} height={this.state.screenResolution.height} />
+						<ArtBoard 
+							width={this.state.screenResolution.width} 
+							height={this.state.screenResolution.height} 
+							widgetDialogOpen={this.state.widgetDialogOpen} 
+							handleClose={this.handleClose}
+							backgroundColor={`rgba(${ this.state.backgroundColor.r }, ${ this.state.backgroundColor.g }, ${ this.state.backgroundColor.b }, ${ this.state.backgroundColor.a })`}
+							backgroundImgURL={this.state.backgroundImgURL}
+							widgetsUsed={this.state.widgetsUsed} 
+						/>
 					</div>
 				</div>
 				
@@ -111,6 +182,23 @@ class AddPresentationPage extends React.Component {
 									<MenuItem key={index} value={index} primaryText={`${resolution[0]}x${resolution[1]}`} />
 								))}
 							</DropDownMenu>
+						</div>
+						<div>
+							<label>
+								<span  style={{marginRight: 30}}>Background:</span>
+								<TextField name="backgroundImgURL" hintText="Image Link" onChange={this.handleImgURLInput} />
+							</label>
+							<span style={{marginLeft: 30, marginRight: 40}}>Or</span>
+							<div style={{display: 'inline-block'}}>
+								<RaisedButton label="CHOOSE COLOR" onClick={() => { this.handleColorPickerClick()} }/>
+								{this.state.displayColorPicker ?<div style={ popover }> 
+									<div 
+										onClick={() => { this.handleColorPickerClose() }}
+										style={ cover }
+									/>
+										<SketchPicker color={this.state.backgroundColor} onChange={this.handleColorChange} />
+								</div> : null}
+							</div>
 						</div>
 					</div>
 				</Dialog>

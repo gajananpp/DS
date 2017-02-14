@@ -1,4 +1,4 @@
-@import 'settings';
+/*@import 'settings';
 @import 'common/layout';
 @import 'common/typography';
 
@@ -18,7 +18,7 @@ body {
   font-weight: normal;
   font-smoothing: antialiased;
 }
-
+*/
 
 /* Add your global styles below... */
 
@@ -30,3 +30,8 @@ body {
 }
 
 */
+
+
+.editPresentation :hover {
+  cursor: pointer;
+}

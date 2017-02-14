@@ -33,14 +33,6 @@ class ArtBoard extends React.Component {
 					)) }
 				</div>
 
-				<Dialog
-					title="Select Widget"
-					modal={true}
-					actions={<RaisedButton label="Cancel" primary={true} onClick={this.props.handleClose} />}
-					open={this.props.widgetDialogOpen}
-				>
-					
-				</Dialog>
 			</Scrollbars>
 		);
 	}

@@ -4,15 +4,50 @@ import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-
 import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 
+import { GridList, GridTile } from 'material-ui/GridList';
+
 import { SketchPicker } from 'react-color';
 
 import ArtBoard from '../components/ArtBoard';
+
+import mainCSS from '../css/main.css';
+
+import availableWidgetsList from '../widgets/availableWidgetsList';
+
+
+// import ImageWidget from '../widgets/ImageWidget';
+
+const styles = {
+	popover : {
+    	position: 'absolute',
+      	zIndex: '2',
+    },
+    cover : {
+      	position: 'fixed',
+      	top: '0px',
+      	right: '0px',
+      	bottom: '0px',
+      	left: '0px',
+    },
+    gridStyles : {
+  		root: {
+    		display: 'flex',
+    		flexWrap: 'wrap',
+    		justifyContent: 'flex-start',
+  		},
+  		gridList: {
+    		width: 500,
+    		height: 450,
+    		overflowY: 'auto',
+  		},
+	},
+};
+
 
 const screenResolutions = [
 	[1024, 768],
@@ -50,17 +85,24 @@ class AddPresentationPage extends React.Component {
 			},
 
 			displayColorPicker: false,
-			widgetDialogOpen: false,
+			widgetSettingsDialogOpen: false,
+			addWidgetDialogOpen: false,
 
-			widgetsUsed: [{"name": "Image Widget", "element": <div style={{width: '100%', height: '100%'}}><img style={{width: '100%', height: '100%'}} src="http://www.w3schools.com/css/img_fjords.jpg" alt="image appears here"/></div>}],
+			widgetsUsed: [],
 		};
+	}
+
+	handlePresentationDialogOpen = () => {
+		this.setState({
+			dialogOpen: true,
+		});
 	}
 
 
 	handleClose = () => {
 		this.setState({
 			dialogOpen: false,
-			widgetDialogOpen: false
+			addWidgetDialogOpen: false
 		});
 	}
 
@@ -106,26 +148,25 @@ class AddPresentationPage extends React.Component {
 		});
 	}
 
-	openDialogWidget() {
+	openWidgetStore() {
 		this.setState({
-			widgetDialogOpen: true
+			addWidgetDialogOpen: true
+		});
+	}
+
+	openWidgetSettingsDialog(obj) {
+		this.setState({
+			widgetSettingsDialogOpen: !this.state.widgetSettingsDialogOpen,
+		});
+	}
+
+	addWidgetToArray(event, tile, index) {
+		this.setState({
+			widgetsUsed: this.state.widgetsUsed.concat([{ "name": `${tile.type} ${index}`, "type": tile.type, "element": tile.element }]),
 		});
 	}
 
 	render() {
-
-		const popover = {
-      		position: 'absolute',
-      		zIndex: '2',
-    	};
-    	const cover = {
-      		position: 'fixed',
-      		top: '0px',
-      		right: '0px',
-      		bottom: '0px',
-      		left: '0px',
-    	};
-
 
 		return (
 			<div>
@@ -133,22 +174,28 @@ class AddPresentationPage extends React.Component {
 					<div
 						style={{width: "20%", height: "85vh"}}
 					>
-						<div style={{textAlign: 'center', fontSize: 20, color:'white', backgroundColor: 'grey', height: 50}}>
-							<span style={{lineHeight: 2.5}}>{this.state.presentationName}</span>
+						<div className={mainCSS.editPresentation}>
+							<div style={{textAlign: 'center', fontSize: 20, color:'white', backgroundColor: 'grey', height: 50}} onClick={ this.handlePresentationDialogOpen }>
+								<span style={{lineHeight: 2.5}}>{this.state.presentationName}</span>
+							</div>
 						</div>
 						<List style={{padding: 0}}>
-							<ListItem primaryText="Add Widget" onClick={() => this.openDialogWidget()} leftIcon={<FontIcon className="fa fa-plus" />} />
+							<ListItem primaryText="Add Widget" onClick={() => this.openWidgetStore()} leftIcon={<FontIcon className="fa fa-plus" />} />
+							<Divider />
+							{ this.state.widgetsUsed.map((obj, index, arr) => (
+								<ListItem key={index} primaryText={`${obj.type} ${index}`} onClick={ () => this.openWidgetSettingsDialog(obj) } leftIcon={<FontIcon className="fa fa-pencil" />} />
+							)) }
 						</List>
 					</div>
 					<div
 						style={{width: "80%", height: "84.5vh", border: '1px solid black', outline: '5px solid grey', overflow: 'auto'}}
 						 id="presentation-artboard"
 					>
+						
+
 						<ArtBoard 
 							width={this.state.screenResolution.width} 
 							height={this.state.screenResolution.height} 
-							widgetDialogOpen={this.state.widgetDialogOpen} 
-							handleClose={this.handleClose}
 							backgroundColor={`rgba(${ this.state.backgroundColor.r }, ${ this.state.backgroundColor.g }, ${ this.state.backgroundColor.b }, ${ this.state.backgroundColor.a })`}
 							backgroundImgURL={this.state.backgroundImgURL}
 							widgetsUsed={this.state.widgetsUsed} 
@@ -168,7 +215,7 @@ class AddPresentationPage extends React.Component {
 				>
 					<div>
 						<div id="presenation-name" style={{}}>
-							<TextField name="presentationName" hintText="Enter Presentation Name" onChange={(event, text) => this.handleInputName(event, text)} />
+							<TextField name="presentationName" hintText="Enter Presentation Name" defaultValue={this.state.presentationName} onChange={(event, text) => this.handleInputName(event, text)} />
 						</div>
 						<div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
 							<span style={{marginRight: 5}}>Display Size: </span> 
@@ -186,15 +233,15 @@ class AddPresentationPage extends React.Component {
 						<div>
 							<label>
 								<span  style={{marginRight: 30}}>Background:</span>
-								<TextField name="backgroundImgURL" hintText="Image Link" onChange={this.handleImgURLInput} />
+								<TextField name="backgroundImgURL" hintText="Image Link" defaultValue={this.state.backgroundImgURL} onChange={this.handleImgURLInput} />
 							</label>
 							<span style={{marginLeft: 30, marginRight: 40}}>Or</span>
 							<div style={{display: 'inline-block'}}>
 								<RaisedButton label="CHOOSE COLOR" onClick={() => { this.handleColorPickerClick()} }/>
-								{this.state.displayColorPicker ?<div style={ popover }> 
+								{this.state.displayColorPicker ? <div style={ styles.popover }> 
 									<div 
 										onClick={() => { this.handleColorPickerClose() }}
-										style={ cover }
+										style={ styles.cover }
 									/>
 										<SketchPicker color={this.state.backgroundColor} onChange={this.handleColorChange} />
 								</div> : null}
@@ -202,6 +249,37 @@ class AddPresentationPage extends React.Component {
 						</div>
 					</div>
 				</Dialog>
+
+				
+
+				<Dialog
+					title="Widget Store"
+					modal={true}
+					contentStyle={{width: '100%', maxWidth: 'none'}}
+					actions={<RaisedButton label="Cancel" primary={true} onClick={this.handleClose} />}
+					open={this.state.addWidgetDialogOpen}
+				>
+					Select Widget
+					<div style={styles.gridStyles.root} >
+						<GridList
+							cellHeight={180}
+							style={styles.gridStyles.gridList}
+						>
+							{ availableWidgetsList.map((tile, index) => (
+								<GridTile
+									key={index}
+									title={tile.title}
+									subtitle={<span>by <b>{tile.author}</b></span>}
+									style={{cursor: 'pointer'}}
+									onClick={(event) => this.addWidgetToArray(event, tile, index) }
+								>
+									<img src={tile.imgIcon} />
+								</GridTile>
+							)) }
+						</GridList>
+					</div>
+				</Dialog>
+
 			</div>
 		);
 	}

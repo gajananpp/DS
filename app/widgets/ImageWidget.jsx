@@ -14,7 +14,8 @@ class ImageWidget extends React.Component {
 	}
 
 
-	handleChange = (event, text) => {
+
+	handleUrlChange = (event, text) => {
 		this.setState({
 			imgSrc : text,
 		});
@@ -49,7 +50,7 @@ class ImageWidget extends React.Component {
 					<div>
 						<label>
 							<span style={{marginRight: 20}}>Image Link :</span>
-							<TextField hintText="Image URL" defaultValue={this.state.imgSrc} onChange={ this.handleChange } />
+							<TextField hintText="Image URL" defaultValue={this.state.imgSrc} onChange={ this.handleUrlChange } />
 						</label>
 					</div>
 				</Dialog>

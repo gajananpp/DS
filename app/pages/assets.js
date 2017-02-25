@@ -63,7 +63,11 @@ const linkAssets = () => {
 const styleAssets = () => {
     return [
         { type: "text/css", cssText: 
-            ``
+            `
+                .highlight:hover {
+                    background-color: rgba(255, 100, 150, 0.5);
+                }
+            `
         }
     ];
 };

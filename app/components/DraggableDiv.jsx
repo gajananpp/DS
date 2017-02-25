@@ -10,6 +10,10 @@ class DraggableDiv extends React.Component {
 		
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		console.log('placeholders-updated');
+	}
+
 	render() {
 		return (
 			<Rnd
@@ -23,6 +27,7 @@ class DraggableDiv extends React.Component {
 				}}
 				minWidth={25}
 				minHeight={25}
+				zIndex={this.props.zIndex}
 				bounds='parent'
 			>
 					{this.props.children}

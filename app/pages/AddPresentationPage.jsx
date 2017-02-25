@@ -8,12 +8,17 @@ import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-
 import { GridList, GridTile } from 'material-ui/GridList';
+
+import DraggableList from 'react-draggable-list';
+
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import { SketchPicker } from 'react-color';
 
+import ListTemplate from '../components/ListTemplate';
 import ArtBoard from '../components/ArtBoard';
+
 
 import mainCSS from '../css/main.css';
 
@@ -160,10 +165,35 @@ class AddPresentationPage extends React.Component {
 		});
 	}
 
-	addWidgetToArray(event, tile, index) {
+	addWidgetToArray(event, tile) {
+		let index = this.state.widgetsUsed.length;
 		this.setState({
-			widgetsUsed: this.state.widgetsUsed.concat([{ "name": `${tile.type} ${index}`, "type": tile.type, "element": tile.element }]),
+			widgetsUsed: this.state.widgetsUsed.concat([{ "dynamicIndex": index, "widgetIndex": index, "name": `${tile.type} ${index}`, "type": tile.type, "element": tile.element, "removeWidget": this.removeWidgetFromArray }]),
 		});
+		console.log(this.state.widgetsUsed);
+	}
+
+	removeWidgetFromArray = (index) => {
+		let arr = this.state.widgetsUsed;
+		arr.splice(index, 1);
+		this.setState({
+			widgetsUsed: arr,
+		});
+		arr = arr.map((obj, index) => {
+			obj.dynamicIndex = index;
+		});
+		console.log('arr');
+	}
+
+	handleListChange(newList) {
+		// console.log(newList);
+		this.setState({
+			widgetsUsed: newList,
+		});
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		// console.log("ok");
 	}
 
 	render() {
@@ -182,9 +212,19 @@ class AddPresentationPage extends React.Component {
 						<List style={{padding: 0}}>
 							<ListItem primaryText="Add Widget" onClick={() => this.openWidgetStore()} leftIcon={<FontIcon className="fa fa-plus" />} />
 							<Divider />
-							{ this.state.widgetsUsed.map((obj, index, arr) => (
+							{/* this.state.widgetsUsed.map((obj, index, arr) => (
 								<ListItem key={index} primaryText={`${obj.type} ${index}`} onClick={ () => this.openWidgetSettingsDialog(obj) } leftIcon={<FontIcon className="fa fa-pencil" />} />
-							)) }
+							)) */}
+							<Scrollbars style={{width: "100%", height: "70vh"}}>
+								<div>
+									<DraggableList
+										list={this.state.widgetsUsed}
+										itemKey={"widgetIndex"}
+										template={ListTemplate}
+										onMoveEnd={ (newList) => this.handleListChange(newList) }
+									/>
+								</div>
+							</Scrollbars>
 						</List>
 					</div>
 					<div

@@ -18,7 +18,9 @@ class ArtBoard extends React.Component {
 
 
 
-	componentDidMount() {
+	componentDidUpdate() {
+		console.log('artboard-updated');
+		console.log(this.props.widgetsUsed);
 		// console.log(document.getElementById('presentation-artboard').innerHTML.toString());
 	}
 
@@ -29,7 +31,7 @@ class ArtBoard extends React.Component {
 			<Scrollbars>
 				<div style={{width: this.props.width, height: this.props.height, background: this.props.backgroundColor + ` url(${this.props.backgroundImgURL})` }}>
 					{ this.props.widgetsUsed.map((obj, index) => (
-						<DraggableDiv key={index}>{obj.element}</DraggableDiv>
+						<DraggableDiv zIndex={obj.widgetIndex*100} key={index}>{obj.element}</DraggableDiv>
 					)) }
 				</div>
 

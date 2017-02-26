@@ -3,7 +3,8 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CheckBox from 'material-ui/CheckBox';
+import { RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import Slider from 'material-ui/Slider';
 
 class ImageWidget extends React.Component {
 	constructor(props) {
@@ -11,8 +12,8 @@ class ImageWidget extends React.Component {
 		this.state = {
 			imgSrc: '',
 			
-			grayImage: false,
-			sepiaImage: false,
+			appliedFilter: '',
+			appliedFilterValue: 100,
 
 			dialogOpen: true,
 		};
@@ -26,28 +27,19 @@ class ImageWidget extends React.Component {
 		});
 	}
 
-	handleGrayFilter = (event, isInputChecked) => {
-		if (isInputChecked) {
-			this.imgEl.style.filter = "grayscale(100%)";
-		} else {
-			this.imgEl.style.filter = "";
-		}
+
+	handleFilter = (event, value) => {
+		console.log(value);
+		this.imgEl.style.filter = value;
 		this.setState({
-			grayImage: isInputChecked
+			appliedFilter: value
 		});
-		console.log(isInputChecked);
 	}
 
-	handleSepiaFilter = (event, isInputChecked) => {
-		if (isInputChecked) {
-			this.imgEl.style.filter = "sepia(100%)";
-		} else {
-			this.imgEl.style.filter = "";
-		}
+	handleFilterValue = (event, newValue) => {
 		this.setState({
-			sepiaImage: isInputChecked
+			appliedFilterValue: newValue
 		});
-		console.log(isInputChecked);
 	}
 
 	handleOpen = () => {
@@ -86,16 +78,61 @@ class ImageWidget extends React.Component {
 						</label>
 						<br />
 						<div>
-							<CheckBox
-								label="Black And White Filter"
-								checked={ this.state.grayImage } 
-								onCheck={ this.handleGrayFilter }
+						<fieldset style={{paddingRight: 30, paddingLeft: 30, paddingTop: 20}}>
+							<legend>Filter Control</legend>
+							<RadioButtonGroup name="filter" onChange={ this.handleFilter } valueSelected={this.state.appliedFilter}>
+								<RadioButton 
+									value={`grayscale(${this.state.appliedFilterValue}%)`}
+									label="Black And White Filter"
+								/>
+								<RadioButton 
+									value={`sepia(${this.state.appliedFilterValue}%)`}
+									label="Sepia Filter"
+								/>
+								<RadioButton 
+									value={`brightness(${this.state.appliedFilterValue*2}%)`}
+									label="Brightness"
+								/>
+								<RadioButton 
+									value={`invert(${this.state.appliedFilterValue}%)`}
+									label="Invert"
+								/>
+								<RadioButton 
+									value={`opacity(${this.state.appliedFilterValue}%)`}
+									label="Opacity"
+								/>
+								<RadioButton 
+									value={`saturate(${this.state.appliedFilterValue*2}%)`}
+									label="Saturate"
+								/>
+								<RadioButton 
+									value={`contrast(${this.state.appliedFilterValue*2}%)`}
+									label="Contrast"
+								/>
+								<RadioButton 
+									value={`blur(${this.state.appliedFilterValue/10}px)`}
+									label="Blur"
+								/>
+								<RadioButton 
+									value={`hue-rotate(${this.state.appliedFilterValue*3.6}deg)`}
+									label="Hue Rotate"
+								/>
+								<RadioButton 
+									value={``}
+									label="None"
+								/>
+							</RadioButtonGroup>
+							<br />
+							<span>Filter Value: {this.state.appliedFilterValue}</span>
+							<Slider
+								min={0}
+								max={100}
+								onChange={ this.handleFilterValue }
+								value={this.state.appliedFilterValue}
+								step={1} 
+								style={{marginTop: -15}}
 							/>
-							<CheckBox
-								label="Sepia Filter"
-								checked={ this.state.sepiaImage } 
-								onCheck={ this.handleSepiaFilter }
-							/>
+							</fieldset>
 						</div>
 					</div>
 				</Dialog>

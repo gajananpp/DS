@@ -128,6 +128,10 @@ class ArtBoard extends React.Component {
 		
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		console.log($("#artboard-presentation").html());
+	}
+
 	render() {
 				// console.log(document.getElementById('presentation-artboard').innerHTML.toString());
 

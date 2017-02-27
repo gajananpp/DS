@@ -28,9 +28,55 @@ class ImageWidget extends React.Component {
 	}
 
 
+	// handleFilter = (event, value) => {
+	// 	console.log(value);
+	// 	this.imgEl.style.filter = value;
+	// 	this.setState({
+	// 		appliedFilter: value
+	// 	});
+	// }
+
 	handleFilter = (event, value) => {
-		console.log(value);
-		this.imgEl.style.filter = value;
+		switch (value) {
+			case "grayscale":
+				this.imgEl.style.filter = `grayscale(${this.state.appliedFilterValue}%)`;
+			break;
+
+			case "sepia":
+				this.imgEl.style.filter = `sepia(${this.state.appliedFilterValue}%)`;
+			break;
+
+			case "brightness":
+				this.imgEl.style.filter = `brightness(${this.state.appliedFilterValue*2}%)`;
+			break;
+
+			case "invert":
+				this.imgEl.style.filter = `invert(${this.state.appliedFilterValue}%)`;
+			break;
+
+			case "opacity":
+				this.imgEl.style.filter = `opacity(${this.state.appliedFilterValue}%)`;
+			break;
+
+			case "saturate":
+				this.imgEl.style.filter = `saturate(${this.state.appliedFilterValue*2}%)`;
+			break;
+
+			case "contrast":
+				this.imgEl.style.filter = `contrast(${this.state.appliedFilterValue*2}%)`;
+			break;
+
+			case "blur":
+				this.imgEl.style.filter = `blur(${this.state.appliedFilterValue/10}px)`;
+			break;
+
+			case "hue-rotate":
+				this.imgEl.style.filter = `hue-rotate(${this.state.appliedFilterValue*3.6}deg)`;
+			break;
+
+			default:
+				this.imgEl.style.filter = ``;
+		}
 		this.setState({
 			appliedFilter: value
 		});
@@ -82,39 +128,39 @@ class ImageWidget extends React.Component {
 							<legend>Filter Control</legend>
 							<RadioButtonGroup name="filter" onChange={ this.handleFilter } valueSelected={this.state.appliedFilter}>
 								<RadioButton 
-									value={`grayscale(${this.state.appliedFilterValue}%)`}
+									value={`grayscale`}
 									label="Black And White Filter"
 								/>
 								<RadioButton 
-									value={`sepia(${this.state.appliedFilterValue}%)`}
+									value={`sepia`}
 									label="Sepia Filter"
 								/>
 								<RadioButton 
-									value={`brightness(${this.state.appliedFilterValue*2}%)`}
+									value={`brightness`}
 									label="Brightness"
 								/>
 								<RadioButton 
-									value={`invert(${this.state.appliedFilterValue}%)`}
+									value={`invert`}
 									label="Invert"
 								/>
 								<RadioButton 
-									value={`opacity(${this.state.appliedFilterValue}%)`}
+									value={`opacity`}
 									label="Opacity"
 								/>
 								<RadioButton 
-									value={`saturate(${this.state.appliedFilterValue*2}%)`}
+									value={`saturate`}
 									label="Saturate"
 								/>
 								<RadioButton 
-									value={`contrast(${this.state.appliedFilterValue*2}%)`}
+									value={`contrast`}
 									label="Contrast"
 								/>
 								<RadioButton 
-									value={`blur(${this.state.appliedFilterValue/10}px)`}
+									value={`blur`}
 									label="Blur"
 								/>
 								<RadioButton 
-									value={`hue-rotate(${this.state.appliedFilterValue*3.6}deg)`}
+									value={`hue-rotate`}
 									label="Hue Rotate"
 								/>
 								<RadioButton 
@@ -131,6 +177,7 @@ class ImageWidget extends React.Component {
 								value={this.state.appliedFilterValue}
 								step={1} 
 								style={{marginTop: -15}}
+								onDragStop={(e) => this.handleFilter(e, this.state.appliedFilter) }
 							/>
 							</fieldset>
 						</div>

@@ -86,19 +86,27 @@ class ArtBoard extends React.Component {
 
 			ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
-			if (y > 700) {
-				$("#position-tooltip")[0].style.top = `${y-100}px`;
+			if (y > this.props.height/2) {
+				$("#position-tooltip")[0].style.top = `${y-130}px`;
 				$("#position-tooltip")[0].style.left = `${x+15}px`;
 			} else {
 				$("#position-tooltip")[0].style.top = `${y+15}px`;
 				$("#position-tooltip")[0].style.left = `${x+15}px`;
 			}
 
+			if (x > this.props.width/2) {
+				$("#position-tooltip")[0].style.top = `${y+15}px`;
+				$("#position-tooltip")[0].style.left = `${x-130}px`;
+			} else {
+				$("#position-tooltip")[0].style.top = `${y+15}px`;
+				$("#position-tooltip")[0].style.left = `${x+15}px`;
+			}
 
-			$("#top-pos").text(`Top: ${y} px`);
-			$("#left-pos").text(`Left: ${x} px`);
-			$("#bottom-pos").text(`Bottom: ${canvasEl.height - y} px`);
-			$("#right-pos").text(`Right: ${canvasEl.width - x} px`);
+
+			$("#top-pos").text(`Top: ${Math.round(y)} px`);
+			$("#left-pos").text(`Left: ${Math.round(x)} px`);
+			$("#bottom-pos").text(`Bottom: ${Math.round(canvasEl.height - y)} px`);
+			$("#right-pos").text(`Right: ${Math.round(canvasEl.width - x)} px`);
 				
 			ctx.beginPath();
 			ctx.moveTo(x, 0);
@@ -122,14 +130,15 @@ class ArtBoard extends React.Component {
 
 
 
-			console.log(x, y);
+			// console.log(x, y);
 		});
 		
 		
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log($("#artboard-presentation").html());
+		// console.log($("#artboard-presentation-ph").html());
+		// console.log(this.artboard);
 	}
 
 	render() {
@@ -139,16 +148,18 @@ class ArtBoard extends React.Component {
 			<Scrollbars id="sb-wrapper">
 			<div id="artboard-wrapper">
 				<canvas id="mouse-sniper" width={this.props.width} height={this.props.height} style={{position: "absolute", top: "0", left: "0", zIndex: 1000, opacity: 0.5, pointerEvents: 'none'}}></canvas>
-				<span id="position-tooltip" style={{position: "absolute", top: "0", left: "0", zIndex: 1000, opacity: 0.5, pointerEvents: 'none', backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white', padding: 10}}>
+				<span id="position-tooltip" style={{position: "absolute", top: "0", left: "0", zIndex: 1000, opacity: 0.5, pointerEvents: 'none', backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white', padding: 10, whiteSpace: 'nowrap'}}>
 					<span id="top-pos"></span><br />
 					<span id="left-pos"></span><br />
 					<span id="bottom-pos"></span><br />
 					<span id="right-pos"></span>
 				</span>
-				<div id="artboard-presentation" style={{width: this.props.width, height: this.props.height, background: this.props.backgroundColor + ` url(${this.props.backgroundImgURL})`, position: 'absolute', top: 0, left: 0 }}>
-					{ this.props.widgetsUsed.map((obj, index) => (
-						<DraggableDiv zIndex={obj.widgetIndex} key={index}>{obj.element}</DraggableDiv>
-					)) }
+				<div id="artboard-presentation-ph">
+					<div id="presentation" ref={artboard => this.artboard = artboard} style={{width: this.props.width, height: this.props.height, background: this.props.backgroundColor + ` url(${this.props.backgroundImgURL})`, position: 'absolute', top: 0, left: 0 }}>
+						{ this.props.widgetsUsed.map((obj, index) => (
+							<DraggableDiv zIndex={obj.widgetIndex} key={index}>{obj.element}</DraggableDiv>
+						)) }
+					</div>
 				</div>
 			</div>
 			</Scrollbars>

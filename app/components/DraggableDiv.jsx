@@ -22,9 +22,7 @@ class DraggableDiv extends React.Component {
 					width: 100,
 					height: 100
 				}}
-				style={{
-					border: '3px solid black'
-				}}
+				className="ph-border"
 				minWidth={25}
 				minHeight={25}
 				zIndex={this.props.zIndex}

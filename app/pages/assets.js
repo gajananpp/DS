@@ -64,8 +64,17 @@ const styleAssets = () => {
     return [
         { type: "text/css", cssText: 
             `
+                html, body {
+                    width: 100%;
+                    height: 100%;
+                }
+
                 .highlight:hover {
                     background-color: rgba(255, 100, 150, 0.5);
+                }
+
+                .ph-border {
+                    border: 1px dashed black;
                 }
             `
         }

@@ -40,9 +40,8 @@ UserSchema.statics = {};
 const PresentationSchema = new mongoose.Schema({
   "presentationName": String,
   "presentationResolution": Array,
-  "widgetsUsed": Array,
-  "createdAt": Date,
-  "domData": String  
+  "domData": String,  
+  "createdAt": Date
 });
 
 

@@ -11,7 +11,6 @@ class ImageWidget extends React.Component {
 		super(props);
 		this.state = {
 			imgSrc: '',
-			
 			appliedFilter: '',
 			appliedFilterValue: 100,
 
@@ -106,9 +105,9 @@ class ImageWidget extends React.Component {
 
 	render() {
 		return (
-			<div style={{width: '100%', height: '100%'}} onDoubleClick={ this.handleOpen } >
+			<div className="widget image-widget"  style={{width: '100%', height: '100%'}} onDoubleClick={ this.handleOpen } >
 				<div style={{width: '100%', height: '100%'}}>
-					<img ref={imgEl => this.imgEl = imgEl} className="image-widget" style={{width: '100%', height: '100%'}} src={this.state.imgSrc} alt={this.state.imgSrc} />
+					<img ref={imgEl => this.imgEl = imgEl} style={{width: '100%', height: '100%'}} src={this.state.imgSrc} alt={this.state.imgSrc} />
 				</div>
 
 				<Dialog
@@ -123,9 +122,8 @@ class ImageWidget extends React.Component {
 							<TextField hintText="Image URL" defaultValue={this.state.imgSrc} onChange={ this.handleUrlChange } />
 						</label>
 						<br />
+						<br />
 						<div>
-						<fieldset style={{paddingRight: 30, paddingLeft: 30, paddingTop: 20}}>
-							<legend>Filter Control</legend>
 							<RadioButtonGroup name="filter" onChange={ this.handleFilter } valueSelected={this.state.appliedFilter}>
 								<RadioButton 
 									value={`grayscale`}
@@ -179,7 +177,6 @@ class ImageWidget extends React.Component {
 								style={{marginTop: -15}}
 								onDragStop={(e) => this.handleFilter(e, this.state.appliedFilter) }
 							/>
-							</fieldset>
 						</div>
 					</div>
 				</Dialog>

@@ -16,6 +16,8 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 import { SketchPicker } from 'react-color';
 
+import $ from 'jquery';
+
 import ListTemplate from '../components/ListTemplate';
 import ArtBoard from '../components/ArtBoard';
 
@@ -23,6 +25,8 @@ import ArtBoard from '../components/ArtBoard';
 import mainCSS from '../css/main.css';
 
 import availableWidgetsList from '../widgets/availableWidgetsList';
+
+import { processDomString } from '../utils/processDomString';
 
 
 // import ImageWidget from '../widgets/ImageWidget';
@@ -105,10 +109,15 @@ class AddPresentationPage extends React.Component {
 
 
 	handleClose = () => {
-		this.setState({
-			dialogOpen: false,
-			addWidgetDialogOpen: false
-		});
+		if (this.state.presentationName !== "") {
+			this.setState({
+				dialogOpen: false,
+				addWidgetDialogOpen: false
+			});	
+		} else {
+			alert("GIVE SOME NAME TO YOUR PRESENTATION !!!");
+			console.log("GIVE SOME NAME TO YOUR PRESENTAION !!!");
+		}
 	}
 
 	handleInputName(event, text) {
@@ -192,8 +201,20 @@ class AddPresentationPage extends React.Component {
 		});
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		// console.log("ok");
+	/**
+	 * savePresentation function saves the current state of presentation
+	 * 
+	 */
+	savePresentation = () => {
+		let domData = processDomString($("#artboard-presentation-ph").clone());
+		let presentationData = {
+			presentationName: this.state.presentationName,
+			presentationResolution: this.state.screenResolution,
+			backgroundImgURL: this.state.backgroundImgURL,
+			backgroundColor: this.state.backgroundColor,
+			domData: domData.html()
+		}
+		console.log(domData.html());
 	}
 
 	render() {
@@ -202,7 +223,7 @@ class AddPresentationPage extends React.Component {
 			<div>
 				<div style={{display: 'flex', flexDirection: 'row', height: "85vh"}}>
 					<div
-						style={{width: "20%", height: "85vh"}}
+						style={{width: "20%", height: "100%", boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px"}}
 					>
 						<div className={mainCSS.editPresentation}>
 							<div style={{textAlign: 'center', fontSize: 20, color:'white', backgroundColor: 'grey', height: 50}} onClick={ this.handlePresentationDialogOpen }>
@@ -228,11 +249,8 @@ class AddPresentationPage extends React.Component {
 						</List>
 					</div>
 					<div
-						style={{width: "80%", height: "84.5vh", border: '1px solid black', outline: '5px solid grey', overflow: 'auto'}}
-						 id="presentation-artboard"
+						style={{ width: "75%", height: "75vh", boxShadow: "rgba(0, 0, 0, 0.298039) 0px 19px 60px, rgba(0, 0, 0, 0.219608) 0px 15px 20px", margin: 'auto', overflow: 'auto' }}
 					>
-						
-
 						<ArtBoard 
 							width={this.state.screenResolution.width} 
 							height={this.state.screenResolution.height} 
@@ -242,6 +260,7 @@ class AddPresentationPage extends React.Component {
 						/>
 					</div>
 				</div>
+				<button onClick={ this.savePresentation }>Save</button>
 				
 
 

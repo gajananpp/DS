@@ -3,6 +3,7 @@ import React from  'react';
 import { Card, CardHeader } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
+import $ from 'jquery';
 
 const styles = {
 	itemStyle : {
@@ -32,6 +33,10 @@ class ListTemplate extends React.Component {
 		this.props.item.removeWidget(index);
 	}
 
+	componentDidMount() {
+		this.listTemplate.parentNode.style.marginBottom = 0;
+	}
+
 	render() {
 		const { item, itemSelected, dragHandle } = this.props;
 		const {value} = this.state;
@@ -48,7 +53,7 @@ class ListTemplate extends React.Component {
 		); 
 
 		return (
-			<div>
+			<div ref={listTemplate => this.listTemplate = listTemplate}>
 				{cardHeaderChildren}
 			</div>
 		);

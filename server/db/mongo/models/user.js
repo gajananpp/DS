@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
   "picture": String,
   "createdAt": Date,
   "userData": {
-  	"presentations": [],
+  	"presentations": [{type: mongoose.Schema.Types.ObjectId, ref: 'Presentation'}],
   	"displays": []
   }
 });
@@ -37,20 +37,10 @@ UserSchema.methods = {};
 UserSchema.statics = {};
 
 
-const PresentationSchema = new mongoose.Schema({
-  "presentationName": String,
-  "presentationResolution": Array,
-  "domData": String,  
-  "createdAt": Date
-});
 
-
-PresentationSchema.methods = {};
-PresentationSchema.statics = {};
 
 
 const User = mongoose.model('User', UserSchema);
-const Presentation = mongoose.model('Presentation', PresentationSchema);
 
 export default User;
 

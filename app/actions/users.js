@@ -95,7 +95,7 @@ export function logOut() {
 
 export function getUserInfo() {
   return dispatch => {
-    return makeUserRequest('get', null, '/user/userInfo')
+    return makeUserRequest('get', null, '/user/user-info')
       .then(response => {
         if (response.status === 200) {
           dispatch(userInfo(response.data));

@@ -33,7 +33,7 @@ export default (app) => {
     );
 
 
-    app.get('/user/userInfo', checkAuthentication, (req, res) => {
+    app.get('/user/user-info', checkAuthentication, (req, res) => {
       res.json(req.user);
     });
 
@@ -41,6 +41,10 @@ export default (app) => {
       req.session.destroy();
       req.logout();
       res.redirect("/");
+    });
+
+    app.post('/save-presentation', (req, res) => {
+
     });
 
     function checkAuthentication(req, res, next) {
